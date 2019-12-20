@@ -72,6 +72,7 @@ def jira_backup(account, username, token, json, folder):
             exit(1)
 
         if (last_progress != task_progress) and "error" not in progress_req.text:
+            print(task_progress)
             last_progress = task_progress
         elif "error" in progress_req.text:
             print(progress_req.text)
@@ -120,6 +121,7 @@ def stream_to_s3(filename, folder):
         Filename=folder+filename,
         Key=filename
     )
+
     remove_from_local(folder, filename)
 
 
