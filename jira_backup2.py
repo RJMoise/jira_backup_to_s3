@@ -12,16 +12,11 @@ JSON_DATA = b'{"cbAttachments": "false", "exportToCloud": "false"}'
 # Loads key values from a seperate ini file
 config = configparser.ConfigParser()
 config.read("db.ini")
-
 jiraSite = config["jira"]["site"]
 jiraEmail = config["jira"]["email"]
 jiraToken = config["jira"]["token"]
-
-awsAccesskey = config["aws"]["aws_access_key_id"]
-awsSecretKey = config["aws"]["aws_secret_access_key"]
-bucket = config['aws']['send_to_bucket']
-
-localLocation = config["localPath"]["filePath"]
+awsAccesskey = config["training"]["aws_access_key_id"]
+awsSecretKey = config["training"]["aws_secret_access_key"]
 
 
 def jira_backup(account, username, token, json, folder):
@@ -59,7 +54,7 @@ def jira_backup(account, username, token, json, folder):
         progress_req = session.get(
             url + "/rest/backup/1/export/getProgress?taskId=" + task_id
         )
-        # print(progress_req)
+        print(progress_req)
         # Chop just progress update from json response
         try:
             task_progress = int(
@@ -95,7 +90,7 @@ def jira_backup(account, username, token, json, folder):
         file = session.get(url + '/plugins/servlet/' + download, stream=True)
 
         file.raise_for_status()
-        print(folder)
+
         with open(folder + filename, 'wb') as handle:
             for block in file.iter_content(1024):
                 handle.write(block)
@@ -116,7 +111,7 @@ def stream_to_s3(filename, folder):
     bucket_resource = s3
 
     bucket_resource.upload_file(
-        Bucket=bucket,
+        Bucket='jira-lucro',
         Filename=folder+filename,
         Key=filename
     )
@@ -128,7 +123,8 @@ def remove_from_local(folder, filename):
 
 
 def main():
-    print(localLocation)
+
+    localLocation = r"C:\Backups\\"
     jira_backup(jiraSite, jiraEmail, jiraToken, JSON_DATA, localLocation)
 
 
