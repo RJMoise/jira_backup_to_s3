@@ -11,15 +11,27 @@ Sidenote: You can only backup Jira ONCE every 48 hours if you include attachment
 To use a config file to keep your keys and other variables hidden, create a (in my case) db.ini file in the same location as the script.
 Template based off the code:
 
+
 [jira]
+
 site = (account name before '.atlassian.net')
+
 email = (accounts uername)
+
 token = (create an api token to place here)
 
+
+
 [aws]
+
 aws_access_key_id =
+
 aws_secret_access_key =
+
 send_to_bucket =
 
+
+
 [localPath]
+
 filePath = (folder that files are stored in locally when downloaded)
